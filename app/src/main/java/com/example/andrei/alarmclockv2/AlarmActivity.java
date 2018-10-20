@@ -1,6 +1,7 @@
 package com.example.andrei.alarmclockv2;
 
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -52,34 +53,37 @@ public class AlarmActivity extends AppCompatActivity {
         alarmTextView = findViewById(R.id.alarmText);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ToggleButton toggle = findViewById(R.id.alarmToggle);
+        toggle.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                if (((ToggleButton) view).isChecked()) {
+                    Log.d("AlarmActivity", "Alarm On");
 
+                    Intent myIntent = new Intent(AlarmActivity.this, AlarmReceiver.class);
+                    pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, myIntent, 0);
+
+                    calendar = Calendar.getInstance();
+
+
+                    calendar.set(Calendar.HOUR_OF_DAY, alarmTimePicker.getHour());
+                    calendar.set(Calendar.MINUTE, alarmTimePicker.getMinute());
+
+
+                    alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                            AlarmManager.INTERVAL_DAY, pendingIntent);
+
+                } else {
+                    alarmManager.cancel(pendingIntent);
+                    setAlarmText("Muie");
+                    Log.d("AlarmActivity", "Alarm Off");
+                }
+            }
+        });
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    public void onToggleClicked(View view) {
-        if (((ToggleButton) view).isChecked()) {
-            Log.d("AlarmActivity", "Alarm On");
-
-            Intent myIntent = new Intent(AlarmActivity.this, AlarmReceiver.class);
-            pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, myIntent, 0);
-
-            calendar = Calendar.getInstance();
-
-
-            calendar.set(Calendar.HOUR_OF_DAY, alarmTimePicker.getHour());
-            calendar.set(Calendar.MINUTE, alarmTimePicker.getMinute());
-
-
-            alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                    AlarmManager.INTERVAL_DAY, pendingIntent);
-
-        } else {
-            alarmManager.cancel(pendingIntent);
-            setAlarmText("");
-            Log.d("AlarmActivity", "Alarm Off");
-        }
-    }
 
     public void setAlarmText(String alarmText) {
         alarmTextView.setText(alarmText);

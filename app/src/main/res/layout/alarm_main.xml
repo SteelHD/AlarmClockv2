@@ -22,7 +22,7 @@
         android:checked="false"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/alarmTimePicker"
-        android:onClick="onToggleClicked" />
+        />
 
     <TextView
         android:layout_width="wrap_content"

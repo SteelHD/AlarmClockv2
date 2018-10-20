@@ -1,5 +1,6 @@
 package com.example.andrei.alarmclockv2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setContentView(R.layout.alarm_main);
+               startActivity(new Intent(MainActivity.this, AlarmActivity.class));
             }
         });
     }
