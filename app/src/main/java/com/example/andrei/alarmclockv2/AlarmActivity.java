@@ -77,7 +77,7 @@ public class AlarmActivity extends AppCompatActivity {
 
                 } else {
                     alarmManager.cancel(pendingIntent);
-                    setAlarmText("Muie");
+                    setAlarmText("Alarm off");
                     Log.d("AlarmActivity", "Alarm Off");
                 }
             }
